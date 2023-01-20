@@ -6,7 +6,14 @@ from clearml import Task
 def check_task_status(task_id, timeout=600):
     """Make sure the task can run by checking for iteration reports."""
     # Get the task object
-    task = Task.get_task(task_id=task_id)
+    task_id = task_id[:-1]
+    is_find = False
+    while not is_find:
+        try:
+            task = Task.get_task(task_id=task_id)
+            is_find = True
+        except ValueError:
+            continue
     start_time = time.time()
     if task:
         while time.time() - start_time < timeout:
