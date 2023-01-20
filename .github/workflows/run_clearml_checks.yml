@@ -67,6 +67,7 @@ jobs:
           echo "TASK_ID=$(
             clearml-task --project 'Github CICD Video' --name cicd_test --branch ${{ github.head_ref }} --script task.py --requirements requirements.txt --skip-task-init --queue default | rg -o 'Task id=(.*) sent' -r '$1'
           )" >> $GITHUB_OUTPUT
+          sleep(15)
       - name: Poll for task progress
         run: python check_remotely_runnable.py "${{ steps.launch_task.outputs.TASK_ID }}"s
         # run: python check_clearml_task_running.py "${{ steps.launch_task.outputs.TASK_ID }}"s
