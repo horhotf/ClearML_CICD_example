@@ -85,8 +85,7 @@ def get_clearml_task_of_current_commit(commit_id):
             )
             is_find = True
         except ValueError:
-            if count <5:
-                count+=1
+            if count <500:
                 continue
             else:
                 raise ValueError("No task based on this code was found in ClearML."
