@@ -18,7 +18,7 @@ for i in tqdm(range(10)):
         title="Performance Metric",
         series="Series 1",
         iteration=i,
-        value=random.randint(0, 100) -30
+        value=random.randint(0, 100) -60
     )
     time.sleep(1)
 
