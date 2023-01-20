@@ -68,16 +68,29 @@ def get_task_stats(task):
 def get_clearml_task_of_current_commit(commit_id):
     """Find the ClearML task that correspond to the exact codebase in the commit ID."""
     # Get the ID and Diff of all tasks based on the current commit hash, order by newest
-    tasks = Task.query_tasks(
-        task_filter={
-            'order_by': ['-last_update'],
-            '_all_': dict(fields=['script.version_num'],
-                          pattern=commit_id
-                          ),
-            'status': ['completed']
-        },
-        additional_return_fields=['script.diff']
-    )
+    
+    is_find = False
+    count = 0
+    while not is_find:
+        try:
+            tasks = Task.query_tasks(
+                task_filter={
+                    'order_by': ['-last_update'],
+                    '_all_': dict(fields=['script.version_num'],
+                                pattern=commit_id
+                                ),
+                    'status': ['completed']
+                },
+                additional_return_fields=['script.diff']
+            )
+            is_find = True
+        except ValueError:
+            if count <5:
+                continue
+            else:
+                raise ValueError("No task based on this code was found in ClearML."
+                     "Make sure to run it at least once before merging.")
+    
 
     # If there are tasks, check which one has no diff: aka which one was run with the exact
     # code that is staged in this PR.
