@@ -13,7 +13,6 @@ def check_task_status(task_id, timeout=600):
             is_find = True
         except ValueError:
             continue
-        
     start_time = time.time()
     if task:
         while time.time() - start_time < timeout:
