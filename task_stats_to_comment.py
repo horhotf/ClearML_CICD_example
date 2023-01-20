@@ -70,7 +70,6 @@ def get_clearml_task_of_current_commit(commit_id):
     # Get the ID and Diff of all tasks based on the current commit hash, order by newest
     
     is_find = False
-    count = 0
     while not is_find:
         try:
             tasks = Task.query_tasks(
@@ -85,13 +84,8 @@ def get_clearml_task_of_current_commit(commit_id):
             )
             is_find = True
         except ValueError:
-            if count <500:
                 continue
-            else:
-                raise ValueError("No task based on this code was found in ClearML."
-                     "Make sure to run it at least once before merging.")
     
-
     # If there are tasks, check which one has no diff: aka which one was run with the exact
     # code that is staged in this PR.
     if tasks:
